@@ -1,6 +1,7 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
 const path = require("path");
+const cors = require("cors")
 
 // Database
 const db = require("./app/config/db.config.js");
@@ -11,10 +12,24 @@ db.authenticate()
 
 const app = express();
 
-app.get("/", (request, response) => response.send("YOUR ARE AT ROOT"));
+var corsOptions = {
+    origin: "http://localhost:8081"
+};
+
+app.use(cors(corsOptions));
+
+console.log(app)
+
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+}));
+
+
 
 app.use("/work", require("./app/routes/Work.routes.js"))
 
-const PORT = process.env.PORT || 5000;
+app.get("/", (request, response) => response.send("YOUR ARE AT ROOT"));
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, console.log(`Server has started on port ${PORT}`));

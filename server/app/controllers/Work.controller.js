@@ -2,24 +2,31 @@ const Work = require("../models/Work.js")
     // const db = require("../config/db.config.js");
 
 exports.create = (request, response) => {
-    if (!request.body.title) {
+    // console.log(request.body)
+    console.log(request.body)
+    if (!request.body.type) {
         console.log("Empty request content");
-        console.log(request);
+        // console.log(request);
         response.status(400).send({
             message: "Empty request content"
         })
         return;
     }
+    // console.log(request);
 
     const work = {
+        id: null,
         type: request.body.type,
         worker: request.body.worker,
         description: request.body.worker,
-        data: request.body.description
+        data: request.body.description,
+        status: "PROCESSING"
     }
 
     Work.create(work)
         .then(data => {
+            response.header('Access-Control-Allow-Origin', '*');
+            response.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
             response.send(data);
         })
         .catch(err => {

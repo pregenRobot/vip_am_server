@@ -15,6 +15,9 @@ const Work = db.define("work", {
     data: {
         type: Sequelize.STRING
     },
+    status: {
+        type: Sequelize.ENUM("PROCESSING", "FAILED", "SUCCESS")
+    },
     createdAt: {
         type: Sequelize.DATE
     },
