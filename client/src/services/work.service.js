@@ -1,18 +1,56 @@
-import http from "../http-common.js"
+// import http from "../http-common.js"
+import axios from "axios"
 
 class WorkDataService {
     getAll() {
-        return http.get("/work")
+        return axios.create({
+            baseURL: "http://localhost:8080/",
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).get("/work")
     }
 
     get(id) {
-        return http.get(`/work/${id}`);
+        return axios.create({
+            baseURL: "http://localhost:8080/",
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).get(`/work/view/${id}`);
     }
 
     create(data) {
-        return http.post("/work/upload", data);
+        return axios.create({
+            baseURL: "http://localhost:8080/",
+            headers: {
+                'content-type': 'application/json'
+            }
+        }).post("/work/commit", data);
     }
 
+    upload(data) {
+        return axios.create({
+            baseURL: "http://localhost:8080/",
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }).post("/work/test", data);
+    }
+
+    test(data) {
+        // return axios.post("https://httpbin.org/anything", data, {
+        //     headers: {
+        //         "content-type": "multipart/form-data"
+        //     }
+        // })
+        return axios.create({
+            baseURL: "https://httpbin.org/",
+            headers: {
+                "content-type": "multipart/form-data"
+            }
+        }).post("/anything", data)
+    }
 
 }
 

@@ -1,7 +1,5 @@
 const express = require("express");
-const exphbs = require("express-handlebars");
-const path = require("path");
-const cors = require("cors")
+const cors = require("cors");
 
 // Database
 const db = require("./app/config/db.config.js");
@@ -18,7 +16,7 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-console.log(app)
+// console.log(app)
 
 app.use(express.json())
 app.use(express.urlencoded({
