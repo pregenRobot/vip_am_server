@@ -55,23 +55,23 @@ exports.findTopTen = (request, response) => {
     })
 }
 
-const fileStorageEngine = multer.diskStorage({
-    destination: (request, file, callback) => {
-        callback(null, "./uploads/")
-    },
-    filename: (request, file, callback) => {
-        const uniqueSuffix = '_' + Date.now() + '_' + Math.round(Math.random() * 1E9);
-        callback(null, file.originalname + uniqueSuffix);
-    }
-})
+// const fileStorageEngine = multer.diskStorage({
+//     destination: (request, file, callback) => {
+//         callback(null, "./uploads/")
+//     },
+//     filename: (request, file, callback) => {
+//         const uniqueSuffix = '_' + Date.now() + '_' + Math.round(Math.random() * 1E9);
+//         callback(null, file.originalname + uniqueSuffix);
+//     }
+// })
 
-exports.upload = multer({ storage: fileStorageEngine })
+// exports.upload = multer({ storage: fileStorageEngine })
 
-exports.uploadHandler = (request, response) => {
-    console.log(request)
-    console.log(file);
-    response.send("Single file upload success")
-}
+// exports.uploadHandler = (request, response) => {
+//     console.log(request)
+//     console.log(file);
+//     response.send("Single file upload success")
+// }
 
 exports.findOne = (request, response) => {
 

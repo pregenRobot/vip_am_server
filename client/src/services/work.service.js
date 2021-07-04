@@ -39,11 +39,6 @@ class WorkDataService {
     }
 
     test(data) {
-        // return axios.post("https://httpbin.org/anything", data, {
-        //     headers: {
-        //         "content-type": "multipart/form-data"
-        //     }
-        // })
         return axios.create({
             baseURL: "https://httpbin.org/",
             headers: {
