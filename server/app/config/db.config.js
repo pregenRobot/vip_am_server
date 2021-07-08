@@ -1,16 +1,3 @@
-// module.exports = {
-//     HOST: "localhost",
-//     USER: "root",
-//     PASSWORD: null,
-//     DB: "adcrawl",
-//     dialect: "mysql",
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         acquire: 30000,
-//         idle: 10000
-//     }
-// }
 const Sequelize = require("sequelize");
 
 const dbConfig = {
@@ -24,9 +11,9 @@ const dbConfig = {
         MAX: 5,
         MIN: 0,
         ACQUIRE: 30000,
-        IDLE: 10000
-    }
-}
+        IDLE: 10000,
+    },
+};
 
 module.exports = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
@@ -36,6 +23,6 @@ module.exports = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
         max: dbConfig.POOL.MAX,
         min: dbConfig.POOL.MIN,
         acquire: dbConfig.POOL.ACQUIRE,
-        idle: dbConfig.POOL.IDLE
-    }
-})
+        idle: dbConfig.POOL.IDLE,
+    },
+});

@@ -1,16 +1,20 @@
-import axios from "axios"
+import axios from "axios";
 
 class AuthDataService {
     register(data) {
-        return axios.create({
-            baseURL: "http://localhost:8080/",
-        }).post("/signup", data)
+        return axios
+            .create({
+                baseURL: "http://localhost:8080/",
+            })
+            .post("/auth/register", data);
     }
 
     login(data) {
-        return axios.create({
-            baseURL: "http://localhost:8080/",
-        }).post("/login", data)
+        return axios
+            .create({
+                baseURL: "http://localhost:8080/",
+            })
+            .post("/auth/login", data);
     }
 
     logout() {
@@ -18,11 +22,11 @@ class AuthDataService {
     }
 
     getCurrentUser = () => {
-        return JSON.parse(localStorage.getItem("user"))
-    }
+        return JSON.parse(localStorage.getItem("user"));
+    };
 
     authHeader() {
-        const user = JSON.parse(localStorage.getItem("user"))
+        const user = JSON.parse(localStorage.getItem("user"));
 
         if (user && user.accessToken) {
             return { "x-access-tokenn": user.accessToken };
@@ -31,6 +35,5 @@ class AuthDataService {
         }
     }
 }
-
 
 export default new AuthDataService();
