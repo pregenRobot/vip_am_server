@@ -3,7 +3,7 @@ const db = require("../config/db.config.js");
 
 const User = db.define("user", {
     id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         primaryKey: true,
         autoIncrement: true,
     },

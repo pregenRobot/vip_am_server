@@ -4,7 +4,7 @@ const User = require("./User.model.js");
 
 const AnnotationWork = db.define("annotation_work", {
     id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         primaryKey: true,
         autoIncrement: true,
     },
