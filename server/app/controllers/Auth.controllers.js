@@ -20,7 +20,7 @@ exports.register = (request, response) => {
 
   User.count({ where: { email: email, isActive: 1 } }).then((count) => {
     if (count > 0) {
-      response.status(400).send({
+      response.status(409).send({
         success: false,
         message: "User with that email already exists",
       });
