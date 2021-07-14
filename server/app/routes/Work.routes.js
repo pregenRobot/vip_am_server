@@ -15,6 +15,8 @@ router.get("/view", workController.findOne);
 
 router.post("/upload", workController.upload, workController.uploadHandler);
 
+router.get("/dummy", workController.dummy);
+
 // upload = multer();
 
 // router.post("/test", upload.single("file"), (request, response, next) => {

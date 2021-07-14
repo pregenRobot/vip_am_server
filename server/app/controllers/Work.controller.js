@@ -1,6 +1,15 @@
 const { application } = require("express");
 const AnnotationWork = require("../models/AnnotationWork.model.js");
 const multer = require("multer");
+const Dummy = require("../models/Dummy.model.js");
+
+
+exports.dummy = (request, response) => {
+    console.log(request.body);
+
+    // response.send(Dummy.findAll({where : {id: {$gt: 0}}}));
+    response.status(200).send({message: "Successfully authorized"})
+};
 
 exports.create = (request, response) => {
     // console.log(request.body)

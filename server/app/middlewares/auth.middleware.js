@@ -5,9 +5,14 @@ function authenticateToken(request, response, next) {
     const token = authHeader && authHeader.split(" ")[1];
     if (token == null) return response.sendStatus(401);
 
+    console.log(authHeader);
+
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return response.sendStatus(403);
+        if (err) return response.status(403).send({err:err});
         request.user = user;
         next();
     });
 }
+
+
+module.exports = authenticateToken;

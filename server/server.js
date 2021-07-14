@@ -3,6 +3,7 @@ const cors = require("cors");
 
 // Database
 const db = require("./app/config/db.config.js");
+const authorizer = require("./app/middlewares/auth.middleware.js");
 
 require("dotenv").config();
 
@@ -31,8 +32,9 @@ app.use(
   })
 );
 
-app.use("/work", require("./app/routes/Work.routes.js"));
 app.use("/auth", require("./app/routes/Auth.routes.js"));
+app.use(authorizer)
+app.use("/work", require("./app/routes/Work.routes.js"));
 
 app.get("/", (request, response) => response.send("YOUR ARE AT ROOT"));
 const PORT = process.env.PORT || 8080;
