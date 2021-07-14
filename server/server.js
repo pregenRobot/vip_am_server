@@ -4,18 +4,20 @@ const cors = require("cors");
 // Database
 const db = require("./app/config/db.config.js");
 
+require("dotenv").config();
+
 db.authenticate()
-    .then(() => {
-        console.log("Database connected ...");
-    })
-    .catch((err) => {
-        console.log("Error" + err);
-    });
+  .then(() => {
+    console.log("Database connected ...");
+  })
+  .catch((err) => {
+    console.log("Error" + err);
+  });
 
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8081",
+  origin: "http://localhost:8081",
 };
 
 app.use(cors(corsOptions));
@@ -24,9 +26,9 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(
-    express.urlencoded({
-        extended: true,
-    })
+  express.urlencoded({
+    extended: true,
+  })
 );
 
 app.use("/work", require("./app/routes/Work.routes.js"));

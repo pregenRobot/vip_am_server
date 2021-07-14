@@ -1,0 +1,43 @@
+https://example.com/comments/1
+
+
+### Valid email addresses
+
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+	"email": "testemail@st-andrews.ac.uk",
+	"password": "fakepassword",
+	"userStatus": "u1",
+	"userName": "Tamim Azmain"
+}
+
+### Invalid email addresses
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+	"email": "maat1fasdnfsadfasf@gmail.com",
+	"password": "",
+	"userStatus": "u1",
+	"userName": "Tamim Azmain"
+}
+
+
+### Valid Login Request
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+	"email": "testemail@st-andrews.ac.uk",
+	"password": "fakepassword"
+}
+
+### Request new access token with refresh token
+POST http://localhost:8080/auth/token
+Content-Type: application/json
+
+{
+	"refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJUYW1pbSBBem1haW4iLCJlbWFpbCI6InRlc3RlbWFpbEBzdC1hbmRyZXdzLmFjLnVrIiwicGFzc3dvcmQiOiJlNjgwOGE1NmFhZDY2Y2Y4OWI0MzM4OGVmM2QwZjAyMTIwNjU5NDM5OWRjZDZjMWI3MGQ4MzgyYTFkYWU0MDJiIiwic3RhdHVzIjoidTEiLCJpc0FjdGl2ZSI6MSwiY3JlYXRlZEF0IjoiMjAyMS0wNy0xNFQxNjoxMTo0OC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNy0xNFQxNjoxMTo0OC4wMDBaIiwiaWF0IjoxNjI2MjgzOTMwfQ.hBK_uXwC4jYkZ82XsHN9DMjQMCroUzCxvpXA_Op4sFg"
+}
