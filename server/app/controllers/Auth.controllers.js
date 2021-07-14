@@ -1,92 +1,87 @@
-const { application } = require("express");
 const User = require("../models/User.model");
 const sha256 = require("simple-sha256");
 
-// A request handler for regesitering a user into the User database
-// Request body will look like the following:
-
-// {
-//     "email": "stuff",
-//     "password": "stuff",
-//     "userName": "stuff",
-//     "userStatus": "stuff"
-// }
-
 exports.register = (request, response) => {
-    const { email, password, userName, userStatus } = requesy.body;
+    const { email, password, userName, userStatus } = request.body;
 
-    if (email.length === 0 || !email.includes("@st-andrews.ac.uk")) {
-        response.status(400).json({
+    const validationResult = validateRegisterRequest(
+        email,
+        password,
+        userName,
+        userStatus
+    );
+
+    if (!validationResult["success"]) {
+        response.status(400).send(validationResult);
+        return;
+    }
+
+    User.count({ email: email }).then((count) => {
+        if (count > 0) {
+            response.status(400).send({
+                success: false,
+                message: "User with that email already exists",
+            });
+        } else {
+            const user = new User({
+                name: userName,
+                email: email,
+                password: sha256.sync(password),
+                status: userStatus,
+                isActive: 1,
+            });
+
+            user
+                .save()
+                .then(() => {
+                    response.status(200).send({
+                        success: true,
+                        message: "Account created successfully",
+                    });
+                    return;
+                })
+                .catch((err) => {
+                    console.log(err);
+                    response.status(500).send({
+                        success: false,
+                        message: "Error while saving user",
+                    });
+                });
+        }
+    });
+};
+
+const validateRegisterRequest = (email, password, userName, userStatus) => {
+    if (!email.includes("@st-andrews.ac.uk")) {
+        return {
             success: false,
             message: "Email issued by the university is required",
-        });
-        return;
+        };
     }
 
     if (password.length < 6 || password.length > 40) {
-        response.status(400).json({
+        return {
             success: false,
-            message: "Email is required",
-        });
-        return;
+            message: "Password between 6 and 40 characters is required",
+        };
     }
 
     if (userName.length === 0) {
-        response.status(400).json({
+        return {
             success: false,
-            message: "Email is required",
-        });
-        return;
+            message: "Name field is required",
+        };
     }
 
-    if (email.length === 0) {
-        response.status(400).json({
+    if (!["u1", "u2", "u3", "u4", "m1", "m2", "phd", "faculty"].includes(userStatus)) {
+        return {
             success: false,
-            message: "Email is required",
-        });
-        return;
+            message: 'Invalid status of your account. The options are: "u1", "u2", "u3", "u4", "m1", "m2", "phd", "faculty"',
+        };
     }
+
+    return {
+        success: true,
+        message: "Correct details",
+    };
 };
-
-// exports.register = (request, response) => {
-//     try {
-//         ({ email, password, userName, userStatus } = request.body);
-
-//         console.log(request.body);
-//         console.log(sha256.sync(password));
-
-//         sameEmailUserCount = User.count({ where: { email: email } })
-//             .then((count) => {
-//                 if (count > 0) {
-//                     response.status(409).send({
-//                         message: "User already exists! Could not create new user",
-//                     });
-//                     return;
-//                 } else {
-//                     User.create({
-//                         id: null,
-//                         name: userName,
-//                         email: email,
-//                         password: sha256.sync(password),
-//                         status: userStatus,
-//                         isActive: 1,
-//                     });
-//                     response.status(200).send({
-//                         message: "Successfully created new user!",
-//                     });
-//                     return;
-//                 }
-//             })
-//             .catch((err) => {
-//                 response.status(503).send({
-//                     message: err,
-//                 });
-//                 return;
-//             });
-//     } catch (err) {
-//         response.status(503).send({
-//             message: err,
-//         });
-//         return;
-//     }
-// };
