@@ -6,6 +6,7 @@ import { Link, Switch, Route } from "react-router-dom";
 import CommitWork from "./components/commit-work.component";
 import UploadWork from "./components/upload-work.component";
 import Register from "./components/register-auth.component";
+import ViewWork from "./components/view-work.component";
 
 class App extends Component {
   render() {
@@ -17,7 +18,7 @@ class App extends Component {
           </a>
           <div className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link to={"/work"} className="nav-link">
+              <Link to={"/work/view"} className="nav-link">
                 View
               </Link>
             </li>
@@ -50,6 +51,7 @@ class App extends Component {
             <Route exact path="/work/upload" component={UploadWork} />
             {/* <Route exact path="/work/:hash" component={Work} /> */}
             <Route exact path="/work/auth" component={Register} />
+            <Route exact path="/work/view" component={ViewWork} />
           </Switch>
         </div>
       </div>

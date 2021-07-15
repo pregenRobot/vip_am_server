@@ -1,50 +1,121 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import AuthDataService from "../services/auth.service";
-import sha256 from "fast-sha256";
 
 import { isEmail } from "validator";
 
+const defaults = {
+  email: {
+    alertType: "warning",
+    text: "Please add an email issued by the University of St Andrews",
+  },
+  password: {
+    alertType: "warning",
+    text: "Please add a password between 6 and 40 characters",
+  },
+  name: {
+    alertType: "warning",
+    text: "Please add your name",
+  },
+  status: {
+    alertType: "warning",
+    text: "Please state your year of study if you are a student or select Faculty if you are a staff member",
+  },
+};
 function Register() {
   const form = useRef();
-  const checkBtn = useRef();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [isRegister, setIsRegister] = useState(false);
-  const [isValidEmail, setIsValidEmail] = useState(false);
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [isValidName, setIsValidName] = useState(false);
   const [status, setStatus] = useState("");
-  const [isValidStatus, setIsValidStatus] = useState(false);
-  const [message, setMessage] = useState("");
-  const [showMessage, setShowMessage] = useState(false);
+  const [messages, setMessages] = useState(
+    Object.getOwnPropertyNames(defaults).map((prop) => {
+      return {
+        type: prop,
+        text: defaults[prop].text,
+        alertType: defaults[prop].alertType,
+      };
+    })
+  );
 
   const send = (event) => {
     event.preventDefault();
     //Send first time registration
 
     if (isRegister) {
-      //If doing a registration process
-      if (isValidEmail && isValidPassword && isValidPassword && isValidStatus) {
-        //Only if registration will go successful
-
+      if (messages.length > 0) {
+        console.log("message length is not 0");
+        return;
+      } else {
         AuthDataService.register({
+          userName: name,
           email: email,
           password: password,
-          userName: name,
           userStatus: status,
         })
           .then((response) => {
             console.log(response);
+            addMessage({
+              type: "register",
+              text: response.data.message,
+              alertType: "success",
+            });
           })
-          .catch((err) => {
-            console.log(err);
+          .catch((error) => {
+            console.log(error);
+            addMessage({
+              type: "register",
+              text: error.response.data.message,
+              alertType: "danger",
+            });
           });
       }
     } else {
-      //Else doing a login process
+      AuthDataService.login({
+        email: email,
+        password: password,
+      })
+        .then((response) => {
+          console.log(response.data);
+          localStorage.setItem("token", response.data.accessToken);
+
+          alert("You have logged in successfully.");
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
     }
+  };
+
+  const createMessages = () => {
+    return messages.map((item) => {
+      return (
+        <div className={`alert alert-${item.alertType}`} key={item.type}>
+          {item.text}
+        </div>
+      );
+    });
+  };
+
+  const removeMessage = (type) => {
+    setMessages(
+      messages.filter((item) => {
+        return item.type !== type && item.type !== "register";
+      })
+    );
+  };
+
+  const addMessage = (message) => {
+    console.log(messages);
+    // messages.push({ type: type, message: message });
+    setMessages((previousMessages) => [...previousMessages, message]);
+  };
+
+  const messageExists = (type) => {
+    return messages.some((item) => {
+      // console.log(item.type);
+      return item.type === type;
+    });
   };
 
   return (
@@ -71,9 +142,11 @@ function Register() {
                     const { value } = event.target;
                     setEmail(value);
                     if (isEmail(value) && value.endsWith("@st-andrews.ac.uk")) {
-                      setIsValidEmail(true);
+                      removeMessage("email");
                     } else {
-                      setIsValidEmail(false);
+                      if (!messageExists("email")) {
+                        addMessage({ type: "email", ...defaults.email });
+                      }
                     }
                   }}
                 />
@@ -93,9 +166,11 @@ function Register() {
                     const { value } = event.target;
                     setPassword(value);
                     if (value.length < 40 && value.length > 6) {
-                      setIsValidPassword(true);
+                      removeMessage("password");
                     } else {
-                      setIsValidPassword(false);
+                      if (!messageExists("password")) {
+                        addMessage({ type: "password", ...defaults.password });
+                      }
                     }
                   }}
                 />
@@ -115,9 +190,11 @@ function Register() {
                     const { value } = event.target;
                     setName(value);
                     if (value !== "") {
-                      setIsValidName(true);
+                      removeMessage("name");
                     } else {
-                      setIsValidName(false);
+                      if (!messageExists("name")) {
+                        addMessage({ type: "name", ...defaults.name });
+                      }
                     }
                   }}
                 />
@@ -131,16 +208,17 @@ function Register() {
                 <select
                   className="form-control form-select"
                   required
-                  id="name"
+                  id="status"
                   type="text"
                   onChange={(event) => {
                     const { value } = event.target;
                     setStatus(value);
-
-                    if (value === "--Select one--") {
-                      setIsValidStatus(false);
+                    if (value !== "--Select one--") {
+                      removeMessage("status");
                     } else {
-                      setIsValidStatus(true);
+                      if (!messageExists("status")) {
+                        addMessage({ type: "status", ...defaults.status });
+                      }
                     }
                   }}
                 >
@@ -229,35 +307,7 @@ function Register() {
         )}
       </form>
       <div className="mx-3 my-3">
-        {isRegister && !isValidEmail && email !== "" ? (
-          <div className="alert alert-warning" role="alert">
-            Invalid email. Please use email issued by the university.
-          </div>
-        ) : (
-          <div></div>
-        )}
-        {isRegister && !isValidPassword && password !== "" ? (
-          <div className="alert alert-warning" role="alert">
-            Your password should be between 6 and 40 characters.
-          </div>
-        ) : (
-          <div></div>
-        )}
-        {isRegister && !isValidName ? (
-          <div className="alert alert-warning" role="alert">
-            Your name property cannot be empty
-          </div>
-        ) : (
-          <div></div>
-        )}
-        {isRegister && !isValidStatus ? (
-          <div className="alert alert-warning" role="alert">
-            Please select select a year of study if you are a student or faculty
-            if you area faculty.
-          </div>
-        ) : (
-          <div></div>
-        )}
+        {isRegister ? createMessages() : <div></div>}
       </div>
     </div>
   );

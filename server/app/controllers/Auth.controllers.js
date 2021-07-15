@@ -89,7 +89,7 @@ exports.login = (request, response) => {
         user.toJSON(),
         process.env.ACCESS_TOKEN_SECRET,
         {
-          expiresIn: "10s",
+          expiresIn: "10h",
         }
       );
       const refreshToken = jwt.sign(
