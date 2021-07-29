@@ -51,3 +51,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiO
 {
 	"data": "stuff"
 }
+
+##### Upload a file
+
+POST http://localhost:8080/work/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJUYW1pbSBBem1haW4iLCJlbWFpbCI6InRlc3RlbWFpbEBzdC1hbmRyZXdzLmFjLnVrIiwicGFzc3dvcmQiOiJlNjgwOGE1NmFhZDY2Y2Y4OWI0MzM4OGVmM2QwZjAyMTIwNjU5NDM5OWRjZDZjMWI3MGQ4MzgyYTFkYWU0MDJiIiwic3RhdHVzIjoidTEiLCJpc0FjdGl2ZSI6MSwiY3JlYXRlZEF0IjoiMjAyMS0wNy0xNFQxNjoxMTo0OC4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNy0xNFQxNjoxMTo0OC4wMDBaIiwiaWF0IjoxNjI3NTQzMzY2LCJleHAiOjE2Mjc1NzkzNjZ9.53YQ_Xa52gBzdbh6CpmysuE4ediSd9kltum6jkYEWyQ
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="annotation_work.zip"
+Content-Type: application/zip
+
+< ../resouces/annotation_work.zip
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

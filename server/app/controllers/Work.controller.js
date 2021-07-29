@@ -2,6 +2,9 @@ const { application } = require("express");
 const AnnotationWork = require("../models/AnnotationWork.model.js");
 const multer = require("multer");
 const Dummy = require("../models/Dummy.model.js");
+const {MD5} = require("crypto-js");
+const dateFormat = require("dateformat");
+const fs = require("fs");
 
 
 exports.dummy = (request, response) => {
@@ -70,27 +73,35 @@ exports.findTopTen = (request, response) => {
 
 exports.upload = multer().single("file");
 
+
 exports.uploadHandler = (request, response, next) => {
     const {
         file,
-        body: { name, email },
+        user
     } = request;
 
-    const fileName =
-        CryptoJS.MD5(email + name) +
-        "_" +
-        Math.floor(Math.random() * 1000) +
-        file.originalname;
+    console.log(file);
+    console.log(user);
 
-    fs.writeFile("./app/uploads" + fileName, file.buffer, function(err) {
-        if (err) {
-            return console.log(
-                `[ERR] File from ${name} with email ${email} returned the following error:\n${err}`
-            );
+    const fileName = `${MD5(user.email + user.name)}_${dateFormat(new Date(), "yyyymmdd_HHmmss")}.zip`
+
+    console.log(fileName);
+    
+    fs.writeFile(`./app/uploads/${fileName}`, file.buffer, function(err){
+        if(err) {
+            console.log(err);
+            response.status(500).send({
+                message: "Something went wrong when writing file to server. Check with administrator",
+            });
+        } else {
+            console.log(`File from ${user.email} successfully saved!`);
+            response.status(200).send({
+                message: "File successfully saved!"
+            });
         }
-        console.log(`[LOG] File from ${name} with email ${email} was saved!`);
-    });
-};
+    })
+
+}
 
 exports.findOne = (request, response) => {};
 
