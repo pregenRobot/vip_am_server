@@ -3,7 +3,7 @@ const db = require("../config/db.config.js");
 const User = require("./User.model");
 const Encounter = require("./Encounter.model");
 
-const Source = db.define("source", {
+const Source = db.define("sources", {
     id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -54,7 +54,7 @@ const Source = db.define("source", {
     },
 });
 
-Source.belongsTo(User, {foreignKey: "addedByUserId",});
-Source.belongsTo(Encounter, {foreignKey: "encounterId",});
+User.hasMany(Source, {foreignKey: "addedByUserId",});
+Encounter.hasMany(Source, {foreignKey: "fromEncounterId",});
 
 module.exports = Source;

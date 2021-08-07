@@ -52,6 +52,33 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiO
 	"data": "stuff"
 }
 
+### Add new Encounter
+# DEFINITION: 
+# const {
+#         encounterNumber, NONNULL
+#         speciesName, NONNULL
+#         latitude,
+#         longitude,
+#         country, NONNULL
+#         region, NONNULL
+#         distanceFromSurveyVessel,
+#         description, DEFAULT ""
+#         flag, DEFAULT 1 (represents uncommitted add)
+#     }
+
+POST http://localhost:8080/encounter/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsIm5hbWUiOiJUYW1pbSBBem1haW4iLCJlbWFpbCI6InRlc3RlbWFpbEBzdC1hbmRyZXdzLmFjLnVrIiwicGFzc3dvcmQiOiJlNjgwOGE1NmFhZDY2Y2Y4OWI0MzM4OGVmM2QwZjAyMTIwNjU5NDM5OWRjZDZjMWI3MGQ4MzgyYTFkYWU0MDJiIiwic3RhdHVzIjoidTEiLCJpc0FjdGl2ZSI6MSwiY3JlYXRlZEF0IjoiMjAyMS0wNy0yOVQxMzo0NTo1OS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNy0yOVQxMzo0NTo1OS4wMDBaIiwiaWF0IjoxNjI4MzQ4MDQ0LCJleHAiOjE2MjgzODQwNDR9.-VPn4UuCCVCPXU5K0BEeSi5cbtsQO87F6-xnccCj9_8
+
+{
+	"encounterNumber": "1",
+	"speciesName": "Homo sapiens",
+	"country" : "Japan",
+	"region" : "Yokosuka",
+	"distanceFromSurveyVessel" : "30km",
+	"description" : "This is just some test data that I forgot to delete. Please ignore me."
+}
+
 ##### Upload a file
 
 POST http://localhost:8080/work/upload
