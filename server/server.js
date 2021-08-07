@@ -35,8 +35,10 @@ app.use(
 app.use("/auth", require("./app/routes/Auth.routes.js"));
 app.use(authorizer)
 app.use("/work", require("./app/routes/Work.routes.js"));
-
+app.use("/encounter", require("./app/routes/Encounter.routes.js"));
+app.use("/source", require("./app/routes/Source.routes.js"));
 app.get("/", (request, response) => response.send("YOUR ARE AT ROOT"));
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, console.log(`Server has started on port ${PORT}`));

@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../config/db.config.js");
 const User = require("./User.model.js");
 
-const Encounter = db.define("encounter", {
+const Encounter = db.define("encounters", {
     id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -33,13 +33,27 @@ const Encounter = db.define("encounter", {
     },
     description: {
         type: Sequelize.TEXT,
+        defaultValue: "",
     },
     flag: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        defaultValue: 1,
     },
+    encounterDateTime: {
+        type: Sequelize.DATE,
+    },
+    createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+
 });
 
-Encounter.belongsTo(User, { foreign_key: "addedByUserId" });
+User.hasMany(Encounter, { foreignKey: "addedByUserId" });
 
 module.exports = Encounter;

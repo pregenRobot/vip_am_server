@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 
 const dbConfig = {
-    DB: "vip_am_server",
+    DB: "vip_am",
     USER: "root",
     PASSWORD: "",
     HOST: "localhost",
