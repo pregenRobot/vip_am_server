@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../config/db.config");
 const User = require("./User.model");
 
-const Token = db.define("token", {
+const Token = db.define("tokens", {
     id: {
         type: Sequelize.UUID,
         primaryKey: true,
