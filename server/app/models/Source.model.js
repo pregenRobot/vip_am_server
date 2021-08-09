@@ -41,6 +41,11 @@ const Source = db.define("sources", {
     description: {
         type: Sequelize.TEXT,
     },
+    flag: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1,
+        allowNull: false,
+    },
     createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
