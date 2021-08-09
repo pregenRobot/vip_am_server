@@ -79,6 +79,37 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsIm5hbWUiO
 	"description" : "This is just some test data that I forgot to delete. Please ignore me."
 }
 
+#### Add a new source
+# Structure
+# const {
+# 		fileName,
+# 		filePath,
+# 		fileSize,
+# 		fileHash,
+# 		fileDuration,
+# 		dataStorageLocation,
+# 		channelCount,
+# 		samplingRate,
+# 		description,
+# 		fromEncounterId,
+# 	} = request.body;
+POST http://localhost:8080/source/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsIm5hbWUiOiJUYW1pbSBBem1haW4iLCJlbWFpbCI6InRlc3RlbWFpbEBzdC1hbmRyZXdzLmFjLnVrIiwicGFzc3dvcmQiOiJlNjgwOGE1NmFhZDY2Y2Y4OWI0MzM4OGVmM2QwZjAyMTIwNjU5NDM5OWRjZDZjMWI3MGQ4MzgyYTFkYWU0MDJiIiwic3RhdHVzIjoidTEiLCJpc0FjdGl2ZSI6MSwiY3JlYXRlZEF0IjoiMjAyMS0wNy0yOVQxMzo0NTo1OS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNy0yOVQxMzo0NTo1OS4wMDBaIiwiaWF0IjoxNjI4NTI2MjMyLCJleHAiOjE2Mjg1NjIyMzJ9.vhEGFWSkFIIDQ-H1K5nEqeomF7yg8iAhT4YynTIMP1s
+
+{
+	"fileName" : "test.wav",
+	"filePath" : "C:\\Users\\Public\\Documents\\test.wav",
+	"fileSize" : "12345",
+	"fileHash" : "12345",
+	"fileDuration" : "12345",
+	"dataStorageLocation" : "St Andrews",
+	"channelCount" : 2,
+	"samplingRate" : 44100,
+	"description" : "This is just some test data that I forgot to delete. Please ignore me.",
+	"fromEncounterId" : 2
+}
+
 ##### Upload a file
 
 POST http://localhost:8080/work/upload
