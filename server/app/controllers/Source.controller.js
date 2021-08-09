@@ -13,18 +13,6 @@ exports.findTopTen = (req, res) => {
 exports.create = (request, response) => {
 
 	const {
-		fileName: fileName,
-		filePath: filePath,
-		fileSize: fileSize,
-		fileHash: fileHash,	
-		fileDuration: fileDuration,
-		dataStorageLocation: dataStorageLocation,
-		channelCount: channelCount,
-		samplingRate: samplingRate,
-		description: description,
-	} = request.body;
-
-	const source = new Source({
 		fileName,
 		filePath,
 		fileSize,
@@ -34,9 +22,39 @@ exports.create = (request, response) => {
 		channelCount,
 		samplingRate,
 		description,
-	});
+		fromEncounterId,
+	} = request.body;
+	
+	const user = request.user;
+
+	const source = {
+		fileName: fileName,
+		filePath: filePath,
+		fileSize: fileSize,
+		fileHash: fileHash,	
+		fileDuration: fileDuration,
+		dataStorageLocation: dataStorageLocation,
+		channelCount: channelCount,
+		samplingRate: samplingRate,
+		description: description,
+		fromEncounterId: fromEncounterId,
+		addedByUserId: user.id,
+	}
 
 	const validationResult = validateCreate(source);
+
+	if (!validationResult.success) {
+		response.status(400).send(validationResult);
+	}
+
+	console.log(source);
+
+	Source.create(source).then(source => {
+		response.status(200).send({message: "Successfully added a new source"});
+	}).catch(err => {
+		response.status(400).send(err);
+	});
+
 }
 
 
@@ -46,29 +64,25 @@ const validateCreate = (source) => {
 	if (!source.fileName) {
 		errors.push("Missing file name");
 	}
+
 	if (!source.filePath) {
 		errors.push("Missing file path");
 	}
-	if (!source.fileSize) {
-		errors.push("Missing file size");
-	}
+
 	if (!source.fileHash) {
 		errors.push("Missing file hash");
 	}
-	if (!source.fileDuration) {
-		errors.push("Missing file duration");
-	}
+
 	if (!source.dataStorageLocation) {
 		errors.push("Missing data storage location");
 	}
-	if (!source.channelCount) {
-		errors.push("Missing channel count");
+
+	if (!source.fromEncounterId) {
+		errors.push("Missing from encounter id");
 	}
-	if (!source.samplingRate) {
-		errors.push("Missing sampling rate");
-	}
-	if (!source.description) {
-		errors.push("Missing description");
+
+	if (!source.addedByUserId){
+		errors.push("Missing added by user id");
 	}
 	
 	return {
